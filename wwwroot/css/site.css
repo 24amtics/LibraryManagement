@@ -1,0 +1,9 @@
+body { background: #f5f7fb; color: #202938; }
+main { min-height: calc(100vh - 145px); }
+.card { border-radius: 1rem; }
+.navbar { background: linear-gradient(100deg, #1746a2, #2563eb) !important; }
+.catalogue-card { padding: 1rem; border: 1px solid #e7ebf3; border-radius: .85rem; background: #fff; }
+.hero-panel { background: linear-gradient(135deg, #e8efff, #ffffff); border: 1px solid #dbe5ff; }
+.table { margin-bottom: 0; }
+dt { color: #596579; font-weight: 600; }
+dd { overflow-wrap: anywhere; }

@@ -1,0 +1,51 @@
+@model LibraryMember
+@{
+    ViewData["Title"] = "Book Details";
+    var book = ViewBag.Book as Book;
+    var status = Model.GetDueStatus();
+    var badge = status == "Overdue" ? "bg-danger" : status == "Due Soon" ? "bg-warning text-dark" : status == "Returned" ? "bg-success" : "bg-secondary";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div><h1 class="h2 mb-1">Issue Details</h1><p class="text-muted mb-0">Member and selected book information.</p></div>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back to list</a>
+</div>
+@if (status == "Returned")
+{
+    <div class="alert alert-success">This book has been returned.</div>
+}
+else if (status == "Due Soon")
+{
+    <div class="alert alert-warning">This book is due soon. Please return it on time.</div>
+}
+else if (status == "Overdue")
+{
+    <div class="alert alert-danger">This book is overdue. Current fine: ₹@Model.CalculateFine().ToString("0.00")</div>
+}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100"><div class="card-body p-4">
+            <h2 class="h5 mb-3">Member information</h2>
+            <dl class="row">
+                <dt class="col-sm-5">Member name</dt><dd class="col-sm-7">@Model.MemberName</dd>
+                <dt class="col-sm-5">Department</dt><dd class="col-sm-7">@Model.Department</dd>
+                <dt class="col-sm-5">Email</dt><dd class="col-sm-7">@Model.Email</dd>
+                <dt class="col-sm-5">Member ID</dt><dd class="col-sm-7">@Model.MemberId</dd>
+            </dl>
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100"><div class="card-body p-4">
+            <h2 class="h5 mb-3">Book and issue information</h2>
+            <dl class="row">
+                <dt class="col-sm-5">Book title</dt><dd class="col-sm-7">@(book?.Title ?? $"Book #{Model.BookId}")</dd>
+                <dt class="col-sm-5">Author</dt><dd class="col-sm-7">@(book?.Author ?? "Not available")</dd>
+                <dt class="col-sm-5">Category</dt><dd class="col-sm-7">@(book?.Category ?? "Not available")</dd>
+                <dt class="col-sm-5">Issue date</dt><dd class="col-sm-7">@Model.IssueDate.ToString("dd MMM yyyy")</dd>
+                <dt class="col-sm-5">Expected return</dt><dd class="col-sm-7">@(Model.ReturnDate?.ToString("dd MMM yyyy") ?? "Not set")</dd>
+                <dt class="col-sm-5">Due date</dt><dd class="col-sm-7">@Model.DueDate.ToString("dd MMM yyyy")</dd>
+                <dt class="col-sm-5">Due status</dt><dd class="col-sm-7"><span class="badge @badge">@status</span></dd>
+                <dt class="col-sm-5">Fine amount</dt><dd class="col-sm-7 fw-bold">₹@Model.CalculateFine().ToString("0.00")</dd>
+            </dl>
+        </div></div>
+    </div>
+</div>
